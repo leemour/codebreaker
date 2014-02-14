@@ -18,9 +18,12 @@ module Codebreaker
     end
 
     describe "#guess" do
+      before do
+        game.start('1234')
+      end
+
       context "with no matches" do
         it "sends a mark with ''" do
-          game.start('1234')
           output.should_receive(:puts).with('')
           game.guess('5555')
         end
@@ -28,7 +31,6 @@ module Codebreaker
 
       context "with 1 match" do
         it "sends a mark with '-'" do
-          game.start('1234')
           output.should_receive(:puts).with('-')
           game.guess('2555')
         end
@@ -36,7 +38,6 @@ module Codebreaker
 
       context "with 1 exact match" do
         it "sends a mark with '+'" do
-          game.start('1234')
           output.should_receive(:puts).with('+')
           game.guess('1555')
         end
@@ -44,7 +45,6 @@ module Codebreaker
 
       context "with 2 number matches" do
         it "sends a mark with '--'" do
-          game.start('1234')
           output.should_receive(:puts).with('--')
           game.guess('2355')
         end
@@ -52,7 +52,6 @@ module Codebreaker
 
       context "with 1 number match and 1 exact match (in that order" do
         it "sends a mark with '+-" do
-          game.start('1234')
           output.should_receive(:puts).with('+-')
           game.guess('2535')
         end
@@ -60,9 +59,28 @@ module Codebreaker
 
       context "with all exact matches" do
         it "sends a mark with '++++" do
-          game.start('1234')
           output.should_receive(:puts).with('++++')
           game.guess('1234')
+        end
+      end
+    end
+
+    describe "#won?" do
+      before do
+        game.start('1234')
+      end
+
+      context "with all exact matches" do
+        it "returns true" do
+          game.guess('1234')
+          game.won?.should be_true
+        end
+      end
+
+      context "with 1 exact match" do
+        it "returns false" do
+          game.guess('1234')
+          game.won?.should be_false
         end
       end
     end

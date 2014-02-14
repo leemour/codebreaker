@@ -11,9 +11,24 @@ module Codebreaker
     end
 
     def guess(guess)
+      @output.puts "Secret code is #{@secret}" if guess == 'secret'
+      mark guess
+      winning?(guess) ? stop : false
+    end
+
+    def mark(guess)
       marker = Marker.new(@secret, guess)
       @output.puts '+'*marker.exact_match_count +
                    '-'*marker.number_match_count
+    end
+
+    def stop
+      @output.puts "\n***\nYou are 100% correct.\nYou win the game!!!\n***\n"
+      true
+    end
+
+    def winning?(guess)
+      guess == @secret
     end
   end
 end
