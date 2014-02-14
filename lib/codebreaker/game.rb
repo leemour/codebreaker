@@ -13,8 +13,10 @@ module Codebreaker
     def guess(guess)
       @output.puts "Secret code is #{@secret}" if guess == 'secret'
       mark guess
-      winning?(guess) ? stop : false
+      winning?(guess) ? stop || true : false
     end
+
+    private
 
     def mark(guess)
       marker = Marker.new(@secret, guess)
@@ -24,7 +26,6 @@ module Codebreaker
 
     def stop
       @output.puts "\n***\nYou are 100% correct.\nYou win the game!!!\n***\n"
-      true
     end
 
     def winning?(guess)

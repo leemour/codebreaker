@@ -64,25 +64,5 @@ module Codebreaker
         end
       end
     end
-
-    describe "#won?" do
-      before do
-        game.start('1234')
-      end
-
-      context "with all exact matches" do
-        it "returns true" do
-          game.guess('1234')
-          game.won?.should be_true
-        end
-      end
-
-      context "with 1 exact match" do
-        it "returns false" do
-          game.guess('1234')
-          game.won?.should be_false
-        end
-      end
-    end
   end
 end

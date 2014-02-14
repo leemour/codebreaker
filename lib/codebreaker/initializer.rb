@@ -1,7 +1,10 @@
 module Codebreaker
   class Initializer
+    YESS = %w[YES Yes yes Y y]
+    NOS  = %w[NO No no N n]
+
     def initialize
-      @game   = Codebreaker::Game.new(STDOUT)
+      @game  = Codebreaker::Game.new(STDOUT)
       secret = Codebreaker::Code.generate
       @game.start(secret)
       at_exit { puts "\n***\nThe secret code was: #{secret}\n***"}
@@ -9,20 +12,20 @@ module Codebreaker
 
     def process(guess)
       if @game.guess(guess)
+        @won = true
         catch :again do
           loop do
             puts "\nPlay again? (Yes, No)\n"
             again? gets.chomp
           end
         end
-        @won = true
       end
     end
 
     def again?(answer)
-      if %w[YES Yes yes Y y].include? answer
+      if YESS.include? answer
         throw :again
-      elsif %w[NO No no N n].include? answer
+      elsif NOS.include? answer
         exit
       end
     end
